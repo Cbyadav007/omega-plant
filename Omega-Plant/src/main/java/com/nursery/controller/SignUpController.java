@@ -17,7 +17,7 @@ import com.nursery.model.SignUpData;
 import com.nursery.service.SignUpService;
 
 @RestController
-//@RequestMapping("/sup")
+@RequestMapping("/customer")
 public class SignUpController {
 	
 	@Autowired
