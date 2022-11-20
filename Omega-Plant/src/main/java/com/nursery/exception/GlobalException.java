@@ -80,6 +80,24 @@ public class GlobalException {
 	}
 	
 	
+	@ExceptionHandler(AdminException.class)
+	public ResponseEntity<ErrorDetails> adminExceptionHandler(AdminException ae,WebRequest req){
+		
+		ErrorDetails err = new ErrorDetails();
+		
+		
+		err.setTimestamp(LocalDateTime.now());
+      
+		err.setMessage(ae.getMessage());
+		
+		err.setDetails(req.getDescription(false));
+		
+		
+		
+		return new ResponseEntity<ErrorDetails>(err,HttpStatus.BAD_REQUEST);
+	}
+	
+	
 	
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)

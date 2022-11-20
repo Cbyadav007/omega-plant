@@ -41,7 +41,7 @@ public class LogInServiceImpl implements LogInService {
 	@Override
 	public String logInAccount(LogInData loginData) throws LogInException  {
 		
-		System.out.println("lpass = " + loginData.getPassword());
+//		System.out.println("lpass = " + loginData.getPassword());
 		
 Optional<SignUpData> opt = signUpDAO.findById(loginData.getUserId());
 		

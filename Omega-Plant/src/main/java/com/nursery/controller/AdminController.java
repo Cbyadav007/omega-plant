@@ -10,23 +10,32 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nursery.exception.CustomerException;
+import com.nursery.exception.LogInException;
 import com.nursery.exception.OrderException;
 import com.nursery.exception.PlantException;
 import com.nursery.exception.PlanterException;
 import com.nursery.exception.SeedException;
+import com.nursery.model.AdminLoginData;
+import com.nursery.model.AdminSignUp;
+import com.nursery.model.LogInData;
 import com.nursery.model.Orders;
 import com.nursery.model.Plant;
 import com.nursery.model.Planter;
 import com.nursery.model.Seed;
 import com.nursery.model.SignUpData;
+import com.nursery.service.AdminLogInService;
+import com.nursery.service.AdminSignUpService;
 import com.nursery.service.OrderService;
 import com.nursery.service.PlantServices;
 import com.nursery.service.PlanterService;
@@ -38,6 +47,15 @@ import com.nursery.service.SignUpService;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+	
+	
+	@Autowired
+	private AdminSignUpService adminSignUpService;
+	
+	@Autowired
+	private AdminLogInService adminLoginService;
+	
+	
 	@Autowired
 	private SignUpService signupservice;
 	@Autowired
@@ -53,6 +71,45 @@ public class AdminController {
 	private PlanterService planterService;
 	
 	
+////////////////////////////			Amdin - SignUp			///////////////////////////////////////////////////////	
+	
+	@JsonIgnore
+	@PostMapping("/signUp")
+	public ResponseEntity<AdminSignUp> createNewSignUpHandler(@Valid @RequestBody AdminSignUp newSignUp) throws LogInException {
+		
+		AdminSignUp newSignedUp =adminSignUpService.createNewSignUp(newSignUp);
+		return new ResponseEntity<AdminSignUp>(newSignedUp,HttpStatus.CREATED);
+
+	}
+	
+	@PutMapping("/updateSignUp")
+	public ResponseEntity<AdminSignUp> updateSignUpDetailsHandler(@RequestBody AdminSignUp signUp, @RequestParam String key) throws LogInException
+	{
+		AdminSignUp newUpdatedSignUp = adminSignUpService.updateSignUpDetails(signUp,key);
+		
+		return new ResponseEntity<AdminSignUp>(newUpdatedSignUp,HttpStatus.ACCEPTED);
+		
+	}
+	
+////////////////////////////			Amdin - SignUp			///////////////////////////////////////////////////////
+	
+////////////////////////////			Amdin - Login			///////////////////////////////////////////////////////	
+	
+	
+	@PostMapping("/login")
+	public String loginHandler( @Valid @RequestBody AdminLoginData loginData) throws LogInException {
+		return adminLoginService.logInAccount(loginData);
+	}
+	
+	@PatchMapping("/logout")
+	public String logOutFromAccount(@RequestParam String key) throws LogInException
+	{
+		return adminLoginService.logOutFromAccount(key);
+	}	
+	
+		
+	
+////////////////////////////				Amdin - Login			///////////////////////////////////////////////////////	
 	
    @GetMapping("/allcustomers")
 	public ResponseEntity<List<SignUpData>>  showallcustomers() throws CustomerException{
