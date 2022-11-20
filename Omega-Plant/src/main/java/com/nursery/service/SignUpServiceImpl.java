@@ -7,6 +7,7 @@ import java.util.Optional;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nursery.exception.CustomerException;
@@ -22,6 +23,9 @@ public class SignUpServiceImpl implements SignUpService {
 
 	@Autowired
 	private SignUpDao signUpDAO;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
 	private CurrentUserSessionService getCurrentLoginUserSession;
@@ -41,7 +45,15 @@ public class SignUpServiceImpl implements SignUpService {
 		
 //		System.out.println(newSignUp);
 		
-		return signUpDAO.save(newSignUp);
+		SignUpData sud = new SignUpData();
+		sud.setEmail(newSignUp.getEmail());
+		sud.setUserName(newSignUp.getUserName());
+		sud.setPassword(this.bCryptPasswordEncoder.encode(newSignUp.getPassword()));
+		sud.setMobileNo(newSignUp.getMobileNo());
+		sud.setAddress(newSignUp.getAddress());
+		
+		return signUpDAO.save(sud);
+//		return sud;
 		
 	}
 

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nursery.exception.LogInException;
@@ -30,12 +31,17 @@ public class LogInServiceImpl implements LogInService {
 	private CurrentUserSessionService getCurrentLoginUserSession;
 	
 	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
 	private LoginDataDao loginDataDAO;
 
 
 	
 	@Override
 	public String logInAccount(LogInData loginData) throws LogInException  {
+		
+		System.out.println("lpass = " + loginData.getPassword());
 		
 Optional<SignUpData> opt = signUpDAO.findById(loginData.getUserId());
 		
@@ -46,6 +52,10 @@ Optional<SignUpData> opt = signUpDAO.findById(loginData.getUserId());
 		
 		SignUpData newSignUp = opt.get();
 		
+		System.out.println("nsp = " + newSignUp.getPassword());
+		
+//		System.out.println("ldp = "+ this.bCryptPasswordEncoder.encode(loginData.getPassword()));
+		
 		Integer newSignUpId = newSignUp.getUserId();
 		Optional<CurrentUserSession> currentUserOptional = currentUserSessionDAO.findByUserId(newSignUpId);
 		
@@ -53,7 +63,8 @@ Optional<SignUpData> opt = signUpDAO.findById(loginData.getUserId());
 			throw new LogInException("User Already login with this UserId");
 		}
 		
-		if((newSignUp.getUserId() == loginData.getUserId()) && (newSignUp.getPassword().equals(loginData.getPassword())))
+//		if((newSignUp.getUserId() == loginData.getUserId()) && (newSignUp.getPassword().equals(loginData.getPassword())))
+if((newSignUp.getUserId() == loginData.getUserId()) && (this.bCryptPasswordEncoder.matches(loginData.getPassword(), newSignUp.getPassword())))
 		{
 			String key = RandomString.getRandomNumberString();
 			

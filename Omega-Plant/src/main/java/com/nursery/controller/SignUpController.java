@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nursery.exception.LogInException;
 import com.nursery.model.SignUpData;
 import com.nursery.service.SignUpService;
@@ -23,6 +24,7 @@ public class SignUpController {
 	@Autowired
 	private SignUpService signUpService;
 	
+	@JsonIgnore
 	@PostMapping("/signUp")
 	public ResponseEntity<SignUpData> createNewSignUpHandler(@Valid @RequestBody SignUpData newSignUp) throws LogInException {
 		
