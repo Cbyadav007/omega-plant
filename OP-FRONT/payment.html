@@ -1,0 +1,32 @@
+<html>
+
+   <head>
+    <title> payment page</title>
+    <link rel="stylesheet" href="payment.css">
+
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"
+  ></script>
+   
+   </head>
+   <body>
+    
+<h1>This is payment page</h1>
+<button id="fetchbut">fetch</button>
+
+
+<div id="paybtn">
+    <input type="text" id="payment_field">
+    <button onclick="paymentStart()" class="paybtn">Pay</button></div>
+
+   </body>
+
+
+    </html>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="payment.js"></script>
+   
