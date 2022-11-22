@@ -1,13 +1,19 @@
 package com.nursery.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nursery.exception.PlantException;
@@ -19,6 +25,9 @@ import com.nursery.model.Seed;
 import com.nursery.service.PlantServices;
 import com.nursery.service.PlanterService;
 import com.nursery.service.SeedServices;
+
+import com.razorpay.*;
+
 
 @RestController
 @RequestMapping("/user")
@@ -32,6 +41,43 @@ public class UserController {
 	
 	@Autowired
 	private PlanterService planterService;
+	
+	
+	/////////////////////////////////				Payment       //////////////////////////////////////////////
+	
+	
+	@PostMapping("/create_order")
+	@ResponseBody
+	@CrossOrigin(origins = "http://127.0.0.1:5500")
+	public String createOrder(@RequestBody Map<String, Object> data) throws RazorpayException
+	{
+		System.out.println("This is order function");
+		System.out.println("data from order : " + data);
+		
+	int amt = Integer.parseInt(data.get("amount").toString());
+	
+	var client = new RazorpayClient("rzp_test_ES7a9RUuflN6Pn","SB358n2VKGDrtgol9SjBTjHs");
+	
+	JSONObject ob = new JSONObject();
+	ob.put("amount", amt*100);
+	ob.put("currency", "INR");
+	ob.put("receipt", "txn_235425");
+	
+	//  Creating new Order//////////////////////
+	
+	  Order order = client.Orders.create(ob);
+	System.out.println(order);
+	
+	/////    we can Save in Data base also
+	
+		return order.toString();
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
