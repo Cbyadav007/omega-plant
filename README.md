@@ -12,9 +12,9 @@
 - Spring Data JPA
 - Hibernate
 - MySQL
-- Spring-Security
-- Spring Validation
-- Razorpay Payment Gateway
+- **Spring-Security**
+- **Spring Validation**
+- **Razorpay Payment Gateway**
 - Rest-API
 - Javascript
 - CSS
