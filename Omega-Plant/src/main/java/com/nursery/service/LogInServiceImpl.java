@@ -71,7 +71,7 @@ if((newSignUp.getUserId() == loginData.getUserId()) && (this.bCryptPasswordEncod
 			CurrentUserSession currentUserSession = new CurrentUserSession(newSignUp.getUserId(),key,LocalDateTime.now());
 			currentUserSessionDAO.save(currentUserSession);
 			loginDataDAO.save(loginData);
-			System.out.println(currentUserSession.toString());
+			System.out.println("ppppppppppp = "+currentUserSession.toString());
 			return currentUserSession.toString();
 			
 		}
